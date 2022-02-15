@@ -1,0 +1,30 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        app_id = 'com.tatuas.takotoneco'
+
+        app_version_code = 1
+        app_version_name = '1.0.0'
+
+        kotlin_version = '1.6.10'
+        hilt_version = '2.38.1'
+        lifecycle_version = '2.4.1'
+        nav_version = '2.4.1'
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+    id 'com.android.application' version '7.1.1' apply false
+    id 'com.android.library' version '7.1.1' apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

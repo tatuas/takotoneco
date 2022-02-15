@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/fragment_user_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_nav_user_list"
+        android:title="@string/menu_user_list" />
+    <item
+        android:id="@+id/fragment_about"
+        android:enabled="true"
+        android:icon="@drawable/ic_bottom_nav_about"
+        android:title="@string/menu_about" />
+</menu>
