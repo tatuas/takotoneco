@@ -1,6 +1,7 @@
 package com.tatuas.takotoneco.view
 
 import androidx.recyclerview.widget.RecyclerView
+import timber.log.Timber
 
 class RecyclerViewVerticalScrollListener(
     private val onScrollEnd: (() -> Unit)? = null
@@ -13,9 +14,10 @@ class RecyclerViewVerticalScrollListener(
 
         if (isScrollable &&
             newState == RecyclerView.SCROLL_STATE_IDLE &&
-            recyclerView.canScrollVertically(-1)
+            recyclerView.canScrollVertically(1).not()
         ) {
             onScrollEnd?.invoke()
+            Timber.d("OnScrollEnd")
         }
     }
 }
