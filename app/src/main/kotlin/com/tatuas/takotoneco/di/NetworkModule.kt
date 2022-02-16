@@ -48,13 +48,11 @@ class NetworkModule {
 
     @Singleton
     @Provides
-    fun provideGitHubLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            if (BuildConfig.DEBUG) {
-                setLevel(HttpLoggingInterceptor.Level.BODY)
-            } else {
-                setLevel(HttpLoggingInterceptor.Level.NONE)
-            }
+    fun provideLoggingInterceptor(): HttpLoggingInterceptor? {
+        return if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        } else {
+            null
         }
     }
 
@@ -63,14 +61,14 @@ class NetworkModule {
     @Provides
     fun provideCoilOkHttpClient(
         @ApplicationContext context: Context,
-        loggingInterceptor: HttpLoggingInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor?,
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .cache(CoilUtils.createDefaultCache(context))
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(loggingInterceptor)
+            .apply { if (loggingInterceptor != null) addNetworkInterceptor(loggingInterceptor) }
             .build()
     }
 
@@ -78,10 +76,9 @@ class NetworkModule {
     @Singleton
     @Provides
     fun provideGitHubOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor?,
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
             .addNetworkInterceptor {
                 val request = it.request()
                     .newBuilder()
@@ -93,6 +90,7 @@ class NetworkModule {
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .apply { if (loggingInterceptor != null) addNetworkInterceptor(loggingInterceptor) }
             .build()
     }
 
